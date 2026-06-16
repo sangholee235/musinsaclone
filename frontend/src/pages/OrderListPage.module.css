@@ -1,0 +1,63 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 0 80px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.loading, .empty {
+  text-align: center;
+  padding: 60px 0;
+  color: #a3a3a3;
+  font-size: 15px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid #000;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid #e5e5e5;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.item:hover { background: #f9f9f9; padding-left: 12px; padding-right: 12px; margin: 0 -12px; }
+
+.itemLeft { display: flex; flex-direction: column; gap: 4px; }
+
+.date { font-size: 12px; color: #a3a3a3; }
+.orderId { font-size: 12px; color: #737373; }
+.price { font-size: 16px; font-weight: 700; margin-top: 4px; }
+
+.itemRight { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+.status { font-size: 13px; font-weight: 600; }
+
+.cancelBtn {
+  font-size: 12px;
+  padding: 5px 12px;
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  background: #fff;
+  cursor: pointer;
+  color: #737373;
+  transition: all 0.15s;
+}
+
+.cancelBtn:hover { border-color: #000; color: #000; }
+
+@media (max-width: 480px) {
+  .page { padding: 20px 0 60px; }
+}

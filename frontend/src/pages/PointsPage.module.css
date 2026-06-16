@@ -1,0 +1,82 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 0 80px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.balanceCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 28px 24px;
+  background: var(--gray-900);
+  color: var(--white);
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+}
+
+.balanceLabel {
+  font-size: 14px;
+  color: var(--gray-300);
+}
+
+.balanceValue {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.balanceValue small {
+  font-size: 18px;
+  margin-left: 2px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.list {
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.reason {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.date {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 4px;
+}
+
+.amount {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.plus { color: var(--accent); }
+.minus { color: var(--gray-500); }
+
+.empty {
+  text-align: center;
+  color: var(--gray-400);
+  padding: 80px 0;
+  font-size: 15px;
+}

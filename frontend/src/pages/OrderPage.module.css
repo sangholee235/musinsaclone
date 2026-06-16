@@ -1,0 +1,227 @@
+.page {
+  padding: 32px 0 80px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+  align-items: start;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Section */
+.section {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 24px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* Addresses */
+.noAddress {
+  text-align: center;
+  padding: 20px 0;
+  color: #737373;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.addressList { display: flex; flex-direction: column; gap: 10px; }
+
+.addressCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.addressCard.selectedAddr { border-color: #000; background: #f9f9f9; }
+
+.radioInput { margin-top: 3px; flex-shrink: 0; accent-color: #000; }
+
+.addrName {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.defaultBadge {
+  font-size: 11px;
+  font-weight: 600;
+  background: #000;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.addrDetail { font-size: 13px; color: #737373; margin-top: 2px; }
+
+/* Order items */
+.orderItems { display: flex; flex-direction: column; gap: 0; }
+
+.orderItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.orderItem:last-child { border-bottom: none; }
+
+.orderItemThumb {
+  width: 64px;
+  height: 80px;
+  background: #f2f2f2;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.orderItemInfo { flex: 1; }
+
+.orderItemBrand { font-size: 11px; font-weight: 700; color: #737373; text-transform: uppercase; margin-bottom: 3px; }
+.orderItemName { font-size: 13px; font-weight: 500; color: #171717; margin-bottom: 3px; }
+.orderItemOption { font-size: 12px; color: #a3a3a3; }
+
+.orderItemPrice { font-size: 14px; font-weight: 700; flex-shrink: 0; }
+
+/* Discount (coupon/point) */
+.discountField {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.fieldLabel {
+  width: 56px;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #404040;
+}
+
+.couponSelect {
+  flex: 1;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pointRow { flex: 1; display: flex; gap: 8px; }
+
+.pointInput {
+  flex: 1;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  font-size: 14px;
+  text-align: right;
+}
+
+.pointMaxBtn {
+  flex-shrink: 0;
+  padding: 0 16px;
+  border: 1px solid #000;
+  border-radius: 2px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.pointMaxBtn:hover { background: #f2f2f2; }
+
+.pointHint {
+  font-size: 12px;
+  color: #a3a3a3;
+  margin-top: 4px;
+  padding-left: 68px;
+}
+
+.discountAmt { color: var(--accent); font-weight: 600; }
+
+/* Summary */
+.summary {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 24px;
+  position: sticky;
+  top: 80px;
+}
+
+.summaryRows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #404040;
+}
+
+.free { color: #0066cc; font-weight: 600; }
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.totalPrice { font-size: 20px; }
+
+.orderBtn { height: 52px; font-size: 15px; }
+
+.notice {
+  text-align: center;
+  font-size: 12px;
+  color: #a3a3a3;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .summary { position: static; }
+}
+
+@media (max-width: 480px) {
+  .page { padding: 20px 0 60px; }
+  .section { padding: 16px; }
+}

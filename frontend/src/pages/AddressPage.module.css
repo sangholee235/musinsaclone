@@ -1,0 +1,163 @@
+.page {
+  padding: 32px 0 80px;
+  max-width: 720px;
+}
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.back {
+  font-size: 13px;
+  color: var(--gray-400);
+}
+.back:hover { color: var(--black); }
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* 폼 */
+.form {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-400);
+}
+
+.field input {
+  height: 44px;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  font-size: 14px;
+  transition: border-color var(--transition);
+}
+.field input:focus { border-color: var(--black); outline: none; }
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.zipRow {
+  display: flex;
+  gap: 8px;
+}
+.zipInput { flex: 1; }
+.zipRow button { flex-shrink: 0; height: 44px; }
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  margin: 4px 0 20px;
+  cursor: pointer;
+}
+.checkRow input { width: 16px; height: 16px; accent-color: var(--black); }
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.formActions button { min-width: 96px; }
+
+/* 목록 */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  transition: border-color var(--transition);
+}
+.card:hover { border-color: var(--gray-400); }
+
+.defaultCard {
+  border-color: var(--black);
+  border-width: 1.5px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.cardName {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--black);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+.cardLine {
+  font-size: 13px;
+  color: var(--gray-700, #4b4b4b);
+  line-height: 1.6;
+}
+
+.cardActions {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.linkBtn, .linkBtnDanger {
+  font-size: 13px;
+  color: var(--gray-400);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.linkBtn:hover { color: var(--black); text-decoration: underline; }
+.linkBtnDanger:hover { color: var(--accent); text-decoration: underline; }
+
+.empty {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--gray-400);
+  font-size: 15px;
+}
+.emptySub {
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+@media (max-width: 480px) {
+  .row { grid-template-columns: 1fr; }
+}
