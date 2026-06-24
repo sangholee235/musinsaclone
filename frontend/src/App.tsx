@@ -15,8 +15,10 @@ import CouponPage from './pages/CouponPage'
 import PointsPage from './pages/PointsPage'
 import BrandsPage from './pages/BrandsPage'
 import AddressPage from './pages/AddressPage'
+import ProfilePage from './pages/ProfilePage'
 import NotificationPage from './pages/NotificationPage'
 import AdminOrdersPage from './pages/AdminOrdersPage'
+import AdminProductsPage from './pages/AdminProductsPage'
 import client from './api/client'
 import { useAuthStore } from './store/useAuthStore'
 
@@ -66,11 +68,13 @@ function App() {
           <Route path="/orders/:orderId" element={<PrivateRoute><OrderDetailPage /></PrivateRoute>} />
           <Route path="/mypage" element={<PrivateRoute><MyPage /></PrivateRoute>} />
           <Route path="/mypage/addresses" element={<PrivateRoute><AddressPage /></PrivateRoute>} />
+          <Route path="/mypage/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
           <Route path="/notifications" element={<PrivateRoute><NotificationPage /></PrivateRoute>} />
           <Route path="/wishlist" element={<PrivateRoute><WishlistPage /></PrivateRoute>} />
           <Route path="/coupons" element={<PrivateRoute><CouponPage /></PrivateRoute>} />
           <Route path="/points" element={<PrivateRoute><PointsPage /></PrivateRoute>} />
           <Route path="/admin" element={<AdminRoute><AdminOrdersPage /></AdminRoute>} />
+          <Route path="/admin/products" element={<AdminRoute><AdminProductsPage /></AdminRoute>} />
         </Routes>
       </main>
     </BrowserRouter>

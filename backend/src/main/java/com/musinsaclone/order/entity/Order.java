@@ -41,6 +41,9 @@ public class Order extends BaseEntity {
     private int pointUsed;
 
     @Column(nullable = false)
+    private int shippingFee;
+
+    @Column(nullable = false)
     private int finalPrice;
 
     @Enumerated(EnumType.STRING)

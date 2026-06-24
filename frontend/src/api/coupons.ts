@@ -7,6 +7,7 @@ export interface ClaimableCoupon {
   discountValue: number
   minOrderPrice: number
   expiredAt: string
+  soldOut?: boolean
 }
 
 export interface MyCoupon extends ClaimableCoupon {

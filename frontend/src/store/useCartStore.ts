@@ -12,6 +12,9 @@ interface CartItem {
   price: number
   quantity: number
   totalPrice: number
+  stock: number
+  status: string
+  available: boolean
 }
 
 interface CartState {

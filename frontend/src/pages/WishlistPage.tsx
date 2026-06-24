@@ -5,6 +5,7 @@ import styles from './WishlistPage.module.css'
 
 interface WishItem {
   wishlistId: number; productId: number; productName: string; brandName: string; discountedPrice: number
+  status?: string; available?: boolean
 }
 
 export default function WishlistPage() {
@@ -35,9 +36,15 @@ export default function WishlistPage() {
         ) : (
           <div className={styles.grid}>
             {items.map((item) => (
-              <div key={item.wishlistId} className={styles.card}>
+              <div key={item.wishlistId} className={`${styles.card} ${item.available === false ? styles.soldOutCard : ''}`}>
                 <Link to={`/products/${item.productId}`}>
-                  <div className={styles.imgBox} />
+                  <div className={styles.imgBox}>
+                    {item.available === false && (
+                      <span className={styles.soldOutBadge}>
+                        {item.status === 'SOLD_OUT' ? '품절' : '판매종료'}
+                      </span>
+                    )}
+                  </div>
                 </Link>
                 <div className={styles.info}>
                   <p className={styles.brand}>{item.brandName}</p>

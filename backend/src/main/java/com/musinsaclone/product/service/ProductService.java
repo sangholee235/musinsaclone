@@ -30,6 +30,10 @@ public class ProductService {
     public ProductResponse getProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> BusinessException.notFound("상품을 찾을 수 없습니다."));
+        // 숨김 처리된 상품은 일반 사용자에게 노출하지 않는다. (품절 상품은 상세 노출 후 구매만 차단)
+        if (product.getStatus() == Product.Status.HIDDEN) {
+            throw BusinessException.notFound("상품을 찾을 수 없습니다.");
+        }
         var images = productImageRepository.findByProductIdOrderBySortOrderAsc(productId);
         var options = productOptionRepository.findByProductId(productId);
         return new ProductResponse(product, images, options);
@@ -38,6 +42,12 @@ public class ProductService {
     public Page<ProductSummaryResponse> getProducts(Long categoryId, Long brandId,
                                                      int minPrice, int maxPrice,
                                                      boolean saleOnly, String sort, Pageable pageable) {
+        // 베스트(인기순)는 판매량 집계 기반의 별도 쿼리로 처리한다.
+        if ("best".equals(sort)) {
+            Pageable paged = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            return productRepository.findBestSellers(categoryId, brandId, saleOnly, minPrice, maxPrice, paged)
+                    .map(this::toSummary);
+        }
         Pageable sorted = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), resolveSort(sort));
         return productRepository.findWithFilter(categoryId, brandId, saleOnly, minPrice, maxPrice, sorted)
                 .map(this::toSummary);

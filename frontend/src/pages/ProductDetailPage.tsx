@@ -17,7 +17,7 @@ interface Image { id: number; url: string; isMain: boolean }
 interface ProductDetail {
   id: number; brandName: string; name: string; description: string
   price: number; discountRate: number; discountedPrice: number
-  images: Image[]; options: Option[]
+  status: string; images: Image[]; options: Option[]
 }
 
 export default function ProductDetailPage() {
@@ -33,6 +33,7 @@ export default function ProductDetailPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [avgRating, setAvgRating] = useState(0)
   const [reviewCount, setReviewCount] = useState(0)
+  const [dist, setDist] = useState<Record<number, number>>({})
   const [recent, setRecent] = useState<RecentProduct[]>([])
   const addItem = useCartStore((s) => s.addItem)
 
@@ -48,7 +49,10 @@ export default function ProductDetailPage() {
         discountedPrice: data.discountedPrice, imageUrl: main?.url ?? null,
       })
     })
-    getRating(Number(productId)).then((res) => setAvgRating(res.data.data.averageRating ?? 0))
+    getRating(Number(productId)).then((res) => {
+      setAvgRating(res.data.data.averageRating ?? 0)
+      setDist(res.data.data.distribution ?? {})
+    })
     getReviews(Number(productId)).then((res) => {
       setReviews(res.data.data.content ?? [])
       setReviewCount(res.data.data.totalElements ?? 0)
@@ -62,6 +66,7 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) return navigate('/login')
+    if (product?.status !== 'ON_SALE') return showToast('현재 판매 중이 아닌 상품입니다.')
     if (!selectedOption) return showToast('옵션을 선택해주세요.')
     await addItem(selectedOption.id, quantity)
     showToast('장바구니에 담았습니다.')
@@ -69,6 +74,7 @@ export default function ProductDetailPage() {
 
   const handleBuyNow = async () => {
     if (!isAuthenticated) return navigate('/login')
+    if (product?.status !== 'ON_SALE') return showToast('현재 판매 중이 아닌 상품입니다.')
     if (!selectedOption) return showToast('옵션을 선택해주세요.')
     await addItem(selectedOption.id, quantity)
     navigate('/cart')
@@ -88,6 +94,7 @@ export default function ProductDetailPage() {
   )
 
   const unitPrice = product.discountedPrice + (selectedOption?.extraPrice ?? 0)
+  const isSoldOut = product.status !== 'ON_SALE'
 
   return (
     <div className="container">
@@ -171,8 +178,14 @@ export default function ProductDetailPage() {
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
             </button>
-            <button className={`${styles.actionBtn} ${styles.cartBtn}`} onClick={handleAddToCart}>장바구니</button>
-            <button className={`${styles.actionBtn} ${styles.buyBtn}`} onClick={handleBuyNow}>바로 구매</button>
+            {isSoldOut ? (
+              <button className={`${styles.actionBtn} ${styles.buyBtn}`} disabled>품절</button>
+            ) : (
+              <>
+                <button className={`${styles.actionBtn} ${styles.cartBtn}`} onClick={handleAddToCart}>장바구니</button>
+                <button className={`${styles.actionBtn} ${styles.buyBtn}`} onClick={handleBuyNow}>바로 구매</button>
+              </>
+            )}
           </div>
 
           {/* 상품 설명 */}
@@ -195,6 +208,23 @@ export default function ProductDetailPage() {
             </div>
           )}
         </div>
+        {reviewCount > 0 && (
+          <div className={styles.distribution}>
+            {[5, 4, 3, 2, 1].map((star) => {
+              const count = dist[star] ?? 0
+              const pct = reviewCount > 0 ? (count / reviewCount) * 100 : 0
+              return (
+                <div key={star} className={styles.distRow}>
+                  <span className={styles.distLabel}>{star}점</span>
+                  <div className={styles.distBar}>
+                    <div className={styles.distFill} style={{ width: `${pct}%` }} />
+                  </div>
+                  <span className={styles.distCount}>{count}</span>
+                </div>
+              )
+            })}
+          </div>
+        )}
         {reviews.length === 0 ? (
           <p className={styles.noReview}>아직 작성된 리뷰가 없습니다.<br />구매 후 첫 리뷰를 남겨보세요.</p>
         ) : (

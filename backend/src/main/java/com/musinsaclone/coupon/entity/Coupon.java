@@ -36,6 +36,9 @@ public class Coupon {
     @Column(nullable = false)
     private LocalDateTime expiredAt;
 
+    // 총 발급 한도. null 이면 무제한.
+    private Integer totalQuantity;
+
     public enum DiscountType {
         FIXED, RATE
     }

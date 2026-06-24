@@ -46,4 +46,13 @@ public class User extends BaseEntity {
     public void addPoint(int amount) {
         this.point += amount;
     }
+
+    public void updateProfile(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
+
+    public void changePassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
 }

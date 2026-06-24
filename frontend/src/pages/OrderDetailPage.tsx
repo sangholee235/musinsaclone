@@ -11,7 +11,7 @@ interface OrderItem {
 }
 interface OrderDetail {
   orderId: number; status: string; totalPrice: number
-  discountPrice: number; pointUsed: number; finalPrice: number
+  discountPrice: number; pointUsed: number; shippingFee: number; finalPrice: number
   items: OrderItem[]
 }
 
@@ -50,7 +50,10 @@ export default function OrderDetailPage() {
   }
 
   const handleCancel = async () => {
-    if (!order || !confirm('주문을 취소하시겠습니까?')) return
+    const msg = order?.status === 'PAID'
+      ? '주문을 취소하시겠습니까?\n결제가 취소되고 사용한 포인트·쿠폰이 환불됩니다.'
+      : '주문을 취소하시겠습니까?'
+    if (!order || !confirm(msg)) return
     setBusy(true)
     try {
       await cancelOrder(order.orderId)
@@ -76,6 +79,7 @@ export default function OrderDetailPage() {
 
   const canReview = ['PAID', 'SHIPPING', 'DELIVERED'].includes(order.status)
   const isPending = order.status === 'PENDING'
+  const isPaid = order.status === 'PAID'
 
   return (
     <div className="container">
@@ -135,16 +139,21 @@ export default function OrderDetailPage() {
             <div className={styles.row}><span>상품 금액</span><span>{order.totalPrice.toLocaleString()}원</span></div>
             <div className={styles.row}><span>쿠폰 할인</span><span>{order.discountPrice > 0 ? `-${order.discountPrice.toLocaleString()}` : 0}원</span></div>
             <div className={styles.row}><span>포인트 사용</span><span>{order.pointUsed > 0 ? `-${order.pointUsed.toLocaleString()}` : 0}원</span></div>
+            <div className={styles.row}><span>배송비</span><span>{order.shippingFee > 0 ? `+${order.shippingFee.toLocaleString()}원` : '무료'}</span></div>
             <div className={styles.totalRow}><span>총 결제금액</span><span className={styles.total}>{order.finalPrice.toLocaleString()}원</span></div>
           </div>
         </section>
 
-        {isPending && (
+        {(isPending || isPaid) && (
           <div className={styles.actions}>
-            <button className="btn btn-outline btn-full" onClick={handleCancel} disabled={busy}>주문 취소</button>
-            <button className="btn btn-primary btn-full" onClick={handlePay} disabled={busy}>
-              {busy ? '처리 중...' : `${order.finalPrice.toLocaleString()}원 결제하기`}
+            <button className="btn btn-outline btn-full" onClick={handleCancel} disabled={busy}>
+              {isPaid ? '주문 취소 / 환불' : '주문 취소'}
             </button>
+            {isPending && (
+              <button className="btn btn-primary btn-full" onClick={handlePay} disabled={busy}>
+                {busy ? '처리 중...' : `${order.finalPrice.toLocaleString()}원 결제하기`}
+              </button>
+            )}
           </div>
         )}
         <button className={styles.backBtn} onClick={() => navigate('/orders')}>주문 목록으로</button>

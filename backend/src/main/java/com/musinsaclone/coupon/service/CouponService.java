@@ -35,7 +35,11 @@ public class CouponService {
         return couponRepository.findAll().stream()
                 .filter(Coupon::isValid)
                 .filter(c -> !ownedCouponIds.contains(c.getId()))
-                .map(CouponResponse::new)
+                .map(c -> {
+                    boolean soldOut = c.getTotalQuantity() != null
+                            && userCouponRepository.countByCouponId(c.getId()) >= c.getTotalQuantity();
+                    return new CouponResponse(c, soldOut);
+                })
                 .toList();
     }
 
@@ -47,6 +51,11 @@ public class CouponService {
         if (!coupon.isValid()) throw BusinessException.badRequest("발급 기간이 아닌 쿠폰입니다.");
         if (userCouponRepository.existsByUserIdAndCouponId(userId, couponId)) {
             throw BusinessException.badRequest("이미 발급받은 쿠폰입니다.");
+        }
+        // 발급 한도(선착순)가 설정된 쿠폰은 소진 시 발급을 막는다.
+        if (coupon.getTotalQuantity() != null
+                && userCouponRepository.countByCouponId(couponId) >= coupon.getTotalQuantity()) {
+            throw BusinessException.badRequest("쿠폰이 모두 소진되었습니다.");
         }
         User user = userRepository.getReferenceById(userId);
         userCouponRepository.save(UserCoupon.builder()
@@ -72,14 +81,16 @@ public class CouponService {
         private final int discountValue;
         private final int minOrderPrice;
         private final String expiredAt;
+        private final boolean soldOut;
 
-        public CouponResponse(Coupon coupon) {
+        public CouponResponse(Coupon coupon, boolean soldOut) {
             this.couponId = coupon.getId();
             this.name = coupon.getName();
             this.discountType = coupon.getDiscountType().name();
             this.discountValue = coupon.getDiscountValue();
             this.minOrderPrice = coupon.getMinOrderPrice();
             this.expiredAt = coupon.getExpiredAt().toString();
+            this.soldOut = soldOut;
         }
     }
 

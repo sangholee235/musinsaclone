@@ -27,4 +27,8 @@ public class ProductImage {
 
     @Column(nullable = false)
     private int sortOrder;
+
+    public void changeUrl(String url) {
+        this.url = url;
+    }
 }

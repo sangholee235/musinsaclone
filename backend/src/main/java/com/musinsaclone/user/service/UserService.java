@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +27,35 @@ public class UserService {
     private final AddressRepository addressRepository;
     private final UserCouponRepository userCouponRepository;
     private final PointHistoryRepository pointHistoryRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public UserProfileResponse getProfile(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> BusinessException.notFound("사용자를 찾을 수 없습니다."));
         return new UserProfileResponse(user);
+    }
+
+    @Transactional
+    public void updateProfile(Long userId, UpdateProfileRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> BusinessException.notFound("사용자를 찾을 수 없습니다."));
+        String name = request.getName();
+        if (name == null || name.isBlank()) throw BusinessException.badRequest("이름을 입력해주세요.");
+        user.updateProfile(name.trim(), request.getPhone());
+    }
+
+    @Transactional
+    public void changePassword(Long userId, ChangePasswordRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> BusinessException.notFound("사용자를 찾을 수 없습니다."));
+        if (request.getNewPassword() == null || request.getNewPassword().length() < 8) {
+            throw BusinessException.badRequest("새 비밀번호는 8자 이상이어야 합니다.");
+        }
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw BusinessException.badRequest("현재 비밀번호가 일치하지 않습니다.");
+        }
+        user.changePassword(passwordEncoder.encode(request.getNewPassword()));
     }
 
     @Transactional(readOnly = true)
@@ -83,6 +107,20 @@ public class UserService {
                 .recipient(a.getRecipient()).phone(a.getPhone())
                 .zipcode(a.getZipcode()).address1(a.getAddress1())
                 .address2(a.getAddress2()).isDefault(isDefault).build();
+    }
+
+    @Getter
+    @Setter
+    public static class UpdateProfileRequest {
+        private String name;
+        private String phone;
+    }
+
+    @Getter
+    @Setter
+    public static class ChangePasswordRequest {
+        private String currentPassword;
+        private String newPassword;
     }
 
     @Getter

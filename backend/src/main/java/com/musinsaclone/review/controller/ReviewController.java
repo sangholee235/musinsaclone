@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
@@ -27,8 +25,8 @@ public class ReviewController {
     }
 
     @GetMapping("/products/{productId}/rating")
-    public ApiResponse<Map<String, Double>> getRating(@PathVariable Long productId) {
-        return ApiResponse.ok(Map.of("averageRating", reviewService.getAverageRating(productId)));
+    public ApiResponse<ReviewService.RatingResponse> getRating(@PathVariable Long productId) {
+        return ApiResponse.ok(reviewService.getRatingDetail(productId));
     }
 
     @PostMapping

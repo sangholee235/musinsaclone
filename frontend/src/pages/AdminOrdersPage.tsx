@@ -44,7 +44,10 @@ export default function AdminOrdersPage() {
             <Link to="/" className={styles.back}>‹ 홈</Link>
             <h2 className={styles.title}>관리자 · 주문 관리</h2>
           </div>
-          <span className={styles.count}>총 {orders.length}건</span>
+          <div className={styles.headRight}>
+            <Link to="/admin/products" className={styles.navLink}>상품 관리</Link>
+            <span className={styles.count}>총 {orders.length}건</span>
+          </div>
         </div>
 
         {loading ? (

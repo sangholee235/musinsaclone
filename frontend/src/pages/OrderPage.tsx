@@ -50,7 +50,8 @@ export default function OrderPage() {
   const discount = calcDiscount(selectedCoupon, totalPrice)
   const maxPoint = Math.max(0, Math.min(balance, totalPrice - discount))
   const pointUsed = Math.min(Math.max(0, parseInt(pointInput || '0', 10) || 0), maxPoint)
-  const finalPrice = Math.max(0, totalPrice - discount - pointUsed)
+  const shippingFee = (totalPrice - discount) >= 30000 ? 0 : 3000
+  const finalPrice = Math.max(0, totalPrice - discount - pointUsed) + shippingFee
 
   const handleOrder = async () => {
     if (!selectedAddressId) return alert('배송지를 선택해주세요.')
@@ -172,7 +173,10 @@ export default function OrderPage() {
                 <span>상품 금액</span><span>{totalPrice.toLocaleString()}원</span>
               </div>
               <div className={styles.summaryRow}>
-                <span>배송비</span><span className={styles.free}>무료</span>
+                <span>배송비</span>
+                {shippingFee > 0
+                  ? <span>{shippingFee.toLocaleString()}원</span>
+                  : <span className={styles.free}>무료</span>}
               </div>
               <div className={styles.summaryRow}>
                 <span>쿠폰 할인</span><span className={styles.discountAmt}>{discount > 0 ? `-${discount.toLocaleString()}` : 0}원</span>

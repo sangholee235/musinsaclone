@@ -52,7 +52,7 @@ export default function OrderListPage() {
                   <span className={styles.status} style={{ color: STATUS_COLOR[order.status] }}>
                     {STATUS_LABEL[order.status]}
                   </span>
-                  {order.status === 'PENDING' && (
+                  {(order.status === 'PENDING' || order.status === 'PAID') && (
                     <button className={styles.cancelBtn} onClick={(e) => handleCancel(e, order.orderId)}>
                       취소
                     </button>

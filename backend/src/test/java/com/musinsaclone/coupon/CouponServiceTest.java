@@ -85,6 +85,24 @@ class CouponServiceTest {
     }
 
     @Test
+    @DisplayName("발급 한도가 소진된 쿠폰은 발급할 수 없다")
+    void claim_soldOut() {
+        LocalDateTime now = LocalDateTime.now();
+        Coupon limited = Coupon.builder().id(4L).name("선착순")
+                .discountType(Coupon.DiscountType.FIXED).discountValue(3000).minOrderPrice(10000)
+                .startedAt(now.minusDays(1)).expiredAt(now.plusDays(1))
+                .totalQuantity(1).build();
+        when(couponRepository.findById(4L)).thenReturn(Optional.of(limited));
+        when(userCouponRepository.existsByUserIdAndCouponId(1L, 4L)).thenReturn(false);
+        when(userCouponRepository.countByCouponId(4L)).thenReturn(1L); // 한도 1, 이미 1개 발급
+
+        assertThatThrownBy(() -> couponService.claim(1L, 4L))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("소진");
+        verify(userCouponRepository, never()).save(any());
+    }
+
+    @Test
     @DisplayName("만료된 쿠폰은 발급할 수 없다")
     void claim_expired() {
         when(couponRepository.findById(3L)).thenReturn(Optional.of(coupon(3L, false)));

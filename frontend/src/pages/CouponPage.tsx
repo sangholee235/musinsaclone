@@ -59,9 +59,9 @@ export default function CouponPage() {
                     <p className={styles.name}>{c.name}</p>
                     <p className={styles.cond}>{c.minOrderPrice.toLocaleString()}원 이상 구매 시 · ~{c.expiredAt.slice(0, 10)}</p>
                   </div>
-                  <button className={styles.claimBtn} disabled={loadingId === c.couponId}
+                  <button className={styles.claimBtn} disabled={loadingId === c.couponId || c.soldOut}
                     onClick={() => handleClaim(c.couponId)}>
-                    {loadingId === c.couponId ? '...' : '받기'}
+                    {c.soldOut ? '마감' : loadingId === c.couponId ? '...' : '받기'}
                   </button>
                 </div>
               ))}

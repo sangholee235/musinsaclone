@@ -30,6 +30,10 @@ export interface AddressInput {
 }
 
 export const getProfile = () => client.get('/users/me')
+export const updateProfile = (data: { name: string; phone: string }) =>
+  client.put('/users/me', data)
+export const changePassword = (data: { currentPassword: string; newPassword: string }) =>
+  client.put('/users/me/password', data)
 export const getAddresses = () => client.get('/users/me/addresses')
 export const addAddress = (data: AddressInput) => client.post('/users/me/addresses', data)
 export const deleteAddress = (addressId: number) => client.delete(`/users/me/addresses/${addressId}`)

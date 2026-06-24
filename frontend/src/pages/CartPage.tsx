@@ -3,9 +3,13 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useCartStore } from '../store/useCartStore'
 import styles from './CartPage.module.css'
 
+const FREE_SHIPPING_THRESHOLD = 30000
+const SHIPPING_FEE = 3000
+
 export default function CartPage() {
   const navigate = useNavigate()
   const { items, totalPrice, fetchCart, updateItem, removeItem } = useCartStore()
+  const shippingFee = totalPrice >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE
 
   useEffect(() => { fetchCart() }, [])
 
@@ -35,6 +39,13 @@ export default function CartPage() {
                   <p className={styles.itemBrand}>{item.brandName}</p>
                   <Link to={`/products/${item.productId}`} className={styles.itemName}>{item.productName}</Link>
                   <p className={styles.itemOption}>{item.size} {item.color}</p>
+                  {item.available === false && (
+                    <p className={styles.unavailable}>
+                      {item.status !== 'ON_SALE'
+                        ? (item.status === 'SOLD_OUT' ? '품절된 상품입니다' : '판매 종료된 상품입니다')
+                        : `재고 부족 (남은 수량 ${item.stock}개)`}
+                    </p>
+                  )}
                   <div className={styles.itemBottom}>
                     <div className={styles.qtyControl}>
                       <button className={styles.qBtn} onClick={() => updateItem(item.cartItemId, item.quantity - 1)}>−</button>
@@ -61,14 +72,28 @@ export default function CartPage() {
             </div>
             <div className={styles.summaryRow}>
               <span>배송비</span>
-              <span className={styles.free}>무료</span>
+              {shippingFee > 0
+                ? <span>{shippingFee.toLocaleString()}원</span>
+                : <span className={styles.free}>무료</span>}
             </div>
+            {shippingFee > 0 && (
+              <p className={styles.shipHint}>
+                {(FREE_SHIPPING_THRESHOLD - totalPrice).toLocaleString()}원 더 담으면 무료배송
+              </p>
+            )}
             <div className={styles.summaryDivider} />
             <div className={`${styles.summaryRow} ${styles.totalRow}`}>
               <span>총 결제금액</span>
-              <span>{totalPrice.toLocaleString()}원</span>
+              <span>{(totalPrice + shippingFee).toLocaleString()}원</span>
             </div>
-            <button className={`btn btn-primary btn-full ${styles.orderBtn}`} onClick={() => navigate('/order')}>
+            {items.some((i) => i.available === false) && (
+              <p className={styles.orderWarn}>구매할 수 없는 상품이 있습니다. 제거 후 주문해주세요.</p>
+            )}
+            <button
+              className={`btn btn-primary btn-full ${styles.orderBtn}`}
+              onClick={() => navigate('/order')}
+              disabled={items.length === 0 || items.some((i) => i.available === false)}
+            >
               주문하기
             </button>
           </div>

@@ -15,7 +15,7 @@ export const getRating = (productId: number) =>
   client.get(`/reviews/products/${productId}/rating`)
 
 export const createReview = (data: {
-  productId: number
+  productId?: number
   orderItemId: number
   rating: number
   content: string

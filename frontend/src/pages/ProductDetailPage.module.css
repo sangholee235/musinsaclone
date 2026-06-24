@@ -428,3 +428,39 @@
   white-space: nowrap;
 }
 .recentPrice { font-size: 13px; font-weight: 700; }
+
+.actionBtn:disabled {
+  background: #d4d4d4;
+  border-color: #d4d4d4;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+/* 평점 분포 */
+.distribution {
+  max-width: 360px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.distRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+.distLabel { width: 28px; color: var(--gray-700); }
+.distBar {
+  flex: 1;
+  height: 6px;
+  background: var(--gray-100);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.distFill {
+  height: 100%;
+  background: #ffb400;
+  transition: width 0.3s;
+}
+.distCount { width: 28px; text-align: right; color: var(--gray-400); }

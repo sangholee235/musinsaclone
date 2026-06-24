@@ -37,4 +37,11 @@ public class ProductOption {
     public void increaseStock(int quantity) {
         this.stock += quantity;
     }
+
+    public void update(String size, String color, int stock, int extraPrice) {
+        this.size = size;
+        this.color = color;
+        this.stock = stock;
+        this.extraPrice = extraPrice;
+    }
 }

@@ -25,6 +25,7 @@ const MENU_ITEMS = [
   { label: '포인트', icon: '💰', path: '/points' },
   { label: '배송지', icon: '📍', path: '/mypage/addresses' },
   { label: '알림', icon: '🔔', path: '/notifications' },
+  { label: '회원정보 수정', icon: '⚙️', path: '/mypage/profile' },
 ]
 
 export default function MyPage() {

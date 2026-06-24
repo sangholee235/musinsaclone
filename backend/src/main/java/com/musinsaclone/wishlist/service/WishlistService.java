@@ -47,6 +47,8 @@ public class WishlistService {
         private final String productName;
         private final String brandName;
         private final int discountedPrice;
+        private final String status;
+        private final boolean available;
 
         public WishlistResponse(Wishlist wishlist) {
             this.wishlistId = wishlist.getId();
@@ -55,6 +57,8 @@ public class WishlistService {
             this.productName = product.getName();
             this.brandName = product.getBrand().getName();
             this.discountedPrice = product.getDiscountedPrice();
+            this.status = product.getStatus().name();
+            this.available = product.getStatus() == com.musinsaclone.product.entity.Product.Status.ON_SALE;
         }
     }
 }

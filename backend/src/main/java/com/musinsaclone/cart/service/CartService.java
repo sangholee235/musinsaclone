@@ -31,6 +31,9 @@ public class CartService {
                             User user = userRepository.getReferenceById(userId);
                             ProductOption option = productOptionRepository.findById(productOptionId)
                                     .orElseThrow(() -> BusinessException.notFound("옵션을 찾을 수 없습니다."));
+                            if (option.getProduct().getStatus() != com.musinsaclone.product.entity.Product.Status.ON_SALE) {
+                                throw BusinessException.badRequest("현재 판매 중이 아닌 상품입니다.");
+                            }
                             cartItemRepository.save(CartItem.builder()
                                     .user(user)
                                     .productOption(option)
@@ -79,6 +82,9 @@ public class CartService {
         private final int price;
         private final int quantity;
         private final int totalPrice;
+        private final int stock;
+        private final String status;
+        private final boolean available;
 
         public CartItemResponse(CartItem item) {
             this.cartItemId = item.getId();
@@ -93,6 +99,11 @@ public class CartService {
             this.price = product.getDiscountedPrice() + option.getExtraPrice();
             this.quantity = item.getQuantity();
             this.totalPrice = this.price * this.quantity;
+            this.stock = option.getStock();
+            this.status = product.getStatus().name();
+            // 판매중이고 재고가 담은 수량 이상일 때만 주문 가능
+            this.available = product.getStatus() == com.musinsaclone.product.entity.Product.Status.ON_SALE
+                    && option.getStock() >= item.getQuantity();
         }
     }
 }

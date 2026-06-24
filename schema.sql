@@ -108,7 +108,8 @@ CREATE TABLE coupons (
     discount_value  INT          NOT NULL,
     min_order_price INT          NOT NULL DEFAULT 0,
     started_at      DATETIME     NOT NULL,
-    expired_at      DATETIME     NOT NULL
+    expired_at      DATETIME     NOT NULL,
+    total_quantity  INT          NULL
 );
 
 CREATE TABLE user_coupons (
@@ -128,6 +129,7 @@ CREATE TABLE orders (
     total_price     INT         NOT NULL,
     discount_price  INT         NOT NULL DEFAULT 0,
     point_used      INT         NOT NULL DEFAULT 0,
+    shipping_fee    INT         NOT NULL DEFAULT 0,
     final_price     INT         NOT NULL,
     status          VARCHAR(20) NOT NULL DEFAULT 'PENDING',
     created_at      DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,

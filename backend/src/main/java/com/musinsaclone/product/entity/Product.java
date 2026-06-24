@@ -49,4 +49,18 @@ public class Product extends BaseEntity {
     public int getDiscountedPrice() {
         return price - (price * discountRate / 100);
     }
+
+    public void updateInfo(Brand brand, Category category, String name, String description,
+                           int price, int discountRate) {
+        this.brand = brand;
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.discountRate = discountRate;
+    }
+
+    public void updateStatus(Status status) {
+        this.status = status;
+    }
 }

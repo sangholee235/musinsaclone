@@ -217,6 +217,7 @@ INSERT IGNORE INTO product_images (id, product_id, url, is_main, sort_order) VAL
 (40, 20, 'https://picsum.photos/seed/prod20b/600/800', 0, 1);
 
 -- 쿠폰
-INSERT IGNORE INTO coupons (id, name, discount_type, discount_value, min_order_price, started_at, expired_at) VALUES
-(1, '신규가입 10% 할인', 'RATE',  10, 10000,  NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR)),
-(2, '5,000원 할인 쿠폰',  'FIXED', 5000, 30000, NOW(), DATE_ADD(NOW(), INTERVAL 6 MONTH));
+INSERT IGNORE INTO coupons (id, name, discount_type, discount_value, min_order_price, started_at, expired_at, total_quantity) VALUES
+(1, '신규가입 10% 할인', 'RATE',  10, 10000,  NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), NULL),
+(2, '5,000원 할인 쿠폰',  'FIXED', 5000, 30000, NOW(), DATE_ADD(NOW(), INTERVAL 6 MONTH), 100),
+(3, '선착순 한정 쿠폰',   'FIXED', 3000, 10000, NOW(), DATE_ADD(NOW(), INTERVAL 1 MONTH), 1);

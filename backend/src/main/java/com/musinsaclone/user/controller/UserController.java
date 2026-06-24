@@ -32,6 +32,20 @@ public class UserController {
         return ApiResponse.ok(userService.getProfile(userId));
     }
 
+    @PutMapping("/me")
+    public ApiResponse<Void> updateProfile(@AuthenticationPrincipal Long userId,
+                                           @RequestBody UserService.UpdateProfileRequest request) {
+        userService.updateProfile(userId, request);
+        return ApiResponse.ok();
+    }
+
+    @PutMapping("/me/password")
+    public ApiResponse<Void> changePassword(@AuthenticationPrincipal Long userId,
+                                            @RequestBody UserService.ChangePasswordRequest request) {
+        userService.changePassword(userId, request);
+        return ApiResponse.ok();
+    }
+
     @GetMapping("/me/addresses")
     public ApiResponse<List<UserService.AddressResponse>> getAddresses(@AuthenticationPrincipal Long userId) {
         return ApiResponse.ok(userService.getAddresses(userId));

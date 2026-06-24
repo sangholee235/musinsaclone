@@ -212,3 +212,29 @@
 @media (max-width: 480px) {
   .itemThumb { width: 72px; height: 90px; }
 }
+
+.unavailable {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e8390e;
+  margin-top: 4px;
+}
+
+.orderWarn {
+  font-size: 12px;
+  color: #e8390e;
+  text-align: center;
+  margin: 8px 0;
+}
+
+.orderBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.shipHint {
+  font-size: 12px;
+  color: var(--gray-400);
+  text-align: right;
+  margin-top: -4px;
+}

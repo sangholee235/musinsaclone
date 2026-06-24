@@ -29,4 +29,34 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("minPrice") int minPrice,
             @Param("maxPrice") int maxPrice,
             Pageable pageable);
+
+    // 판매량(취소 제외 주문 수량 합) 기준 인기순. 동일 필터 + 페이지네이션 결합.
+    @Query(value = "SELECT p.* FROM products p " +
+            "LEFT JOIN (" +
+            "  SELECT po.product_id AS pid, SUM(oi.quantity) AS sold " +
+            "  FROM order_items oi " +
+            "  JOIN product_options po ON oi.product_option_id = po.id " +
+            "  JOIN orders o ON oi.order_id = o.id AND o.status <> 'CANCELLED' " +
+            "  GROUP BY po.product_id" +
+            ") s ON s.pid = p.id " +
+            "WHERE p.status = 'ON_SALE' " +
+            "AND (:categoryId IS NULL OR p.category_id = :categoryId) " +
+            "AND (:brandId IS NULL OR p.brand_id = :brandId) " +
+            "AND (:saleOnly = FALSE OR p.discount_rate > 0) " +
+            "AND p.price BETWEEN :minPrice AND :maxPrice " +
+            "ORDER BY COALESCE(s.sold, 0) DESC, p.id DESC",
+            countQuery = "SELECT COUNT(*) FROM products p " +
+            "WHERE p.status = 'ON_SALE' " +
+            "AND (:categoryId IS NULL OR p.category_id = :categoryId) " +
+            "AND (:brandId IS NULL OR p.brand_id = :brandId) " +
+            "AND (:saleOnly = FALSE OR p.discount_rate > 0) " +
+            "AND p.price BETWEEN :minPrice AND :maxPrice",
+            nativeQuery = true)
+    Page<Product> findBestSellers(
+            @Param("categoryId") Long categoryId,
+            @Param("brandId") Long brandId,
+            @Param("saleOnly") boolean saleOnly,
+            @Param("minPrice") int minPrice,
+            @Param("maxPrice") int maxPrice,
+            Pageable pageable);
 }

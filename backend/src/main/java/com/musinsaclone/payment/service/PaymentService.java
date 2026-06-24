@@ -51,6 +51,10 @@ public class PaymentService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> BusinessException.notFound("주문을 찾을 수 없습니다."));
         if (!order.getUser().getId().equals(userId)) throw BusinessException.forbidden("권한이 없습니다.");
+        // 멱등성 보장: 이미 결제 완료/취소된 주문에 재확정 시 포인트 중복 적립을 막는다.
+        if (order.getStatus() != Order.Status.PENDING) {
+            throw BusinessException.badRequest("이미 처리된 주문입니다.");
+        }
 
         Payment payment = paymentRepository.findByOrderId(orderId)
                 .orElseThrow(() -> BusinessException.notFound("결제 정보를 찾을 수 없습니다."));

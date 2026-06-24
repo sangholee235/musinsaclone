@@ -44,4 +44,9 @@ public class UserCoupon {
         this.isUsed = true;
         this.usedAt = LocalDateTime.now();
     }
+
+    public void restore() {
+        this.isUsed = false;
+        this.usedAt = null;
+    }
 }
